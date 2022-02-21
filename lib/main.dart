@@ -3,22 +3,52 @@ import 'package:flutter/material.dart';
 
 import 'models/message.dart';
 
-void main() => runApp(CvrkutanApp());
+void main() => runApp(const CvrkutanApp());
 
-class CvrkutanApp extends StatelessWidget {
-  CvrkutanApp({Key? key}) : super(key: key);
+class CvrkutanApp extends StatefulWidget {
+  const CvrkutanApp({Key? key}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() {
+    return CvrkutanAppState();
+  }
+}
+
+class CvrkutanAppState extends State<CvrkutanApp> {
   static const primaryColor = Color.fromARGB(255, 0, 178, 255);
   static const surfaceColor = Color.fromARGB(255, 239, 239, 239);
+
+  final TextEditingController _newMessageController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
 
   final List<Message> messages = <Message>[
     const Message('Hey, what is up :)', 'spike', 'timestamp1'),
     const Message('Nothing much', 'max', 'timestamp2'),
     const Message('How are u?', 'spike', 'timestamp3'),
-    const Message(
-        'Also sry but i dont speak english so i dont understand what u said just now. Can u say it in some other language? Maybe espanol?',
-        'spike',
-        'timestamp3')
   ];
+
+  void _scrollDown() {
+    if (_scrollController.position.maxScrollExtent > 0) {
+      _scrollController.animateTo(
+        _scrollController.position.maxScrollExtent + 100,
+        duration: const Duration(milliseconds: 250),
+        curve: Curves.fastOutSlowIn,
+      );
+    }
+  }
+
+  void onMessageSend() {
+    if (_newMessageController.text == '') return;
+
+    Message newMessage = Message(_newMessageController.text, 'Spajk', '123');
+    setState(() {
+      messages.add(newMessage);
+    });
+
+    _scrollDown();
+
+    _newMessageController.clear();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +70,8 @@ class CvrkutanApp extends StatelessWidget {
         body: Stack(
           children: [
             ListView.builder(
-                padding: const EdgeInsets.all(8),
+                controller: _scrollController,
+                padding: const EdgeInsets.fromLTRB(0, 0, 0, 100),
                 itemCount: messages.length,
                 itemBuilder: (BuildContext context, int index) {
                   return MessageFull(message: messages[index]);
@@ -48,31 +79,44 @@ class CvrkutanApp extends StatelessWidget {
             Align(
               alignment: Alignment.bottomCenter,
               child: Container(
-                  padding:
-                      const EdgeInsets.only(bottom: 30, left: 20, right: 20),
-                  decoration: const BoxDecoration(),
+                  padding: const EdgeInsets.only(
+                      bottom: 30, left: 20, right: 20, top: 20),
+                  decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          stops: [
+                        0,
+                        0.1
+                      ],
+                          colors: [
+                        Color.fromARGB(0, 255, 255, 255),
+                        Color.fromARGB(255, 255, 255, 255)
+                      ])),
                   child:
                       Row(mainAxisAlignment: MainAxisAlignment.end, children: [
                     // First child is enter comment text input
                     Expanded(
                         child: TextField(
+                      controller: _newMessageController,
                       decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.only(left: 20),
                         hintText: 'Упиши своју поруку...',
                         filled: true,
                         fillColor: surfaceColor,
+                        suffixIcon: IconButton(
+                          icon: const Icon(Icons.send),
+                          color: primaryColor,
+                          iconSize: 25.0,
+                          onPressed: onMessageSend,
+                        ),
                         border: OutlineInputBorder(
                             borderSide:
-                                const BorderSide(color: primaryColor, width: 2),
+                                const BorderSide(color: primaryColor, width: 1),
                             borderRadius: BorderRadius.circular(50)),
                       ),
                     )),
                     // Second child is button
-                    IconButton(
-                      icon: const Icon(Icons.send),
-                      color: primaryColor,
-                      iconSize: 20.0,
-                      onPressed: () {},
-                    )
                   ])),
             )
           ],
