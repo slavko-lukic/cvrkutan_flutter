@@ -110,6 +110,14 @@ class CvrkutanAppState extends State<CvrkutanApp> {
                           iconSize: 25.0,
                           onPressed: onMessageSend,
                         ),
+                        enabledBorder: OutlineInputBorder(
+                            borderSide:
+                                const BorderSide(color: primaryColor, width: 1),
+                            borderRadius: BorderRadius.circular(50)),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide:
+                                const BorderSide(color: primaryColor, width: 1),
+                            borderRadius: BorderRadius.circular(50)),
                         border: OutlineInputBorder(
                             borderSide:
                                 const BorderSide(color: primaryColor, width: 1),
