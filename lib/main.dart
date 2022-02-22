@@ -125,17 +125,15 @@ class CvrkutanAppState extends State<CvrkutanApp> {
                   padding: const EdgeInsets.only(
                       bottom: 30, left: 20, right: 20, top: 20),
                   decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          stops: [
-                        0,
-                        0.1
-                      ],
-                          colors: [
-                        Color.fromARGB(0, 255, 255, 255),
-                        Color.fromARGB(255, 255, 255, 255)
-                      ])),
+                    color: surfaceColor,
+                    boxShadow: <BoxShadow>[
+                      BoxShadow(
+                          color: Colors.black45,
+                          spreadRadius: 0,
+                          blurRadius: 3,
+                          offset: Offset(0, -1))
+                    ],
+                  ),
                   child:
                       Row(mainAxisAlignment: MainAxisAlignment.end, children: [
                     // First child is enter comment text input
@@ -146,7 +144,7 @@ class CvrkutanAppState extends State<CvrkutanApp> {
                         contentPadding: const EdgeInsets.only(left: 20),
                         hintText: 'Упиши своју поруку...',
                         filled: true,
-                        fillColor: surfaceColor,
+                        fillColor: Colors.white,
                         suffixIcon: IconButton(
                           icon: const Icon(Icons.send),
                           color: primaryColor,
