@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 
 class MessageUserData extends StatelessWidget {
   final String username;
-  const MessageUserData({required this.username, Key? key}) : super(key: key);
+  final String picture;
+
+  const MessageUserData(
+      {required this.username, required this.picture, Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,8 +26,7 @@ class MessageUserData extends StatelessWidget {
             child: ClipOval(
               child: SizedBox.fromSize(
                 size: const Size.fromRadius(20), // Image radius
-                child: Image.network('https://i.redd.it/duclb7qrpn771.jpg',
-                    fit: BoxFit.cover),
+                child: Image.network(picture, fit: BoxFit.cover),
               ),
             ),
           ),

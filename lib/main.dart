@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:pusher_channels_flutter/pusher_channels_flutter.dart';
 
 import 'models/message.dart';
+import 'dart:convert';
 
 void main() => runApp(const CvrkutanApp());
 
@@ -22,11 +23,7 @@ class CvrkutanAppState extends State<CvrkutanApp> {
   final TextEditingController _newMessageController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
 
-  final List<Message> messages = <Message>[
-    const Message('Hey, what is up :)', 'spike', 'timestamp1'),
-    const Message('Nothing much', 'max', 'timestamp2'),
-    const Message('How are u?', 'spike', 'timestamp3'),
-  ];
+  final List<Message> messages = <Message>[];
 
   @override
   void initState() {
@@ -35,7 +32,17 @@ class CvrkutanAppState extends State<CvrkutanApp> {
   }
 
   void onEvent(PusherEvent event) {
-    print("onEvent: $event");
+    var messageData = jsonDecode(event.data);
+
+    Message incomingMessage = Message(
+        messageData['message'],
+        messageData['picture'],
+        messageData['username'],
+        messageData['timestamp']);
+
+    setState(() {
+      messages.add(incomingMessage);
+    });
   }
 
   Future<void> _initPusher() async {
@@ -75,7 +82,8 @@ class CvrkutanAppState extends State<CvrkutanApp> {
   void onMessageSend() {
     if (_newMessageController.text == '') return;
 
-    Message newMessage = Message(_newMessageController.text, 'Spajk', '123');
+    Message newMessage =
+        Message(_newMessageController.text, ';', 'Spajk', '123');
     setState(() {
       messages.add(newMessage);
     });

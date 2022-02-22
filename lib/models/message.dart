@@ -1,7 +1,8 @@
 class Message {
   final String message;
   final String username;
+  final String picture;
   final String timestamp;
 
-  const Message(this.message, this.username, this.timestamp);
+  const Message(this.message, this.picture, this.username, this.timestamp);
 }

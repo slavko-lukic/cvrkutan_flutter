@@ -14,8 +14,9 @@ class MessageFull extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.fromLTRB(20, 20, 20, 10),
       child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        MessageText(messageText: message.message),
-        MessageUserData(username: message.username)
+        MessageText(
+            messageText: message.message, messageTimestamp: message.timestamp),
+        MessageUserData(username: message.username, picture: message.picture)
       ]),
     );
   }

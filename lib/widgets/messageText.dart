@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 
 class MessageText extends StatelessWidget {
   final String messageText;
+  final String messageTimestamp;
+
   static const primaryColor = Color.fromARGB(255, 0, 178, 255);
   static const surfaceColor = Color.fromARGB(255, 239, 239, 239);
 
-  const MessageText({required this.messageText, Key? key}) : super(key: key);
+  const MessageText(
+      {required this.messageText, required this.messageTimestamp, Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,10 +33,21 @@ class MessageText extends StatelessWidget {
           width: double.infinity,
           padding: const EdgeInsets.all(15),
           margin: const EdgeInsets.only(right: 5),
-          child: Text(
-            messageText,
-            style: const TextStyle(fontSize: 16, color: Colors.black),
-            textAlign: TextAlign.start,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text(
+                messageText,
+                style: const TextStyle(fontSize: 16, color: Colors.black),
+                textAlign: TextAlign.start,
+              ),
+              Text(
+                messageTimestamp,
+                style: const TextStyle(fontSize: 14, color: Colors.grey),
+                textAlign: TextAlign.start,
+              ),
+            ],
           ),
         ));
   }
