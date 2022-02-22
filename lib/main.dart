@@ -1,3 +1,4 @@
+import 'package:cvrkutan_flutter/services/pusher_service.dart';
 import 'package:cvrkutan_flutter/widgets/messageFull.dart';
 import 'package:flutter/material.dart';
 import 'package:pusher_channels_flutter/pusher_channels_flutter.dart';
@@ -28,10 +29,17 @@ class CvrkutanAppState extends State<CvrkutanApp> {
   @override
   void initState() {
     super.initState();
-    _initPusher();
+    initPusher();
   }
 
-  void onEvent(PusherEvent event) {
+  void initPusher() {
+    PusherService pusherService = PusherService(onEventHandler);
+    pusherService.init();
+    pusherService.subscribe('chat');
+    pusherService.connect();
+  }
+
+  void onEventHandler(PusherEvent event) {
     var messageData = jsonDecode(event.data);
 
     Message incomingMessage = Message(
@@ -43,30 +51,6 @@ class CvrkutanAppState extends State<CvrkutanApp> {
     setState(() {
       messages.add(incomingMessage);
     });
-  }
-
-  Future<void> _initPusher() async {
-    PusherChannelsFlutter pusher = PusherChannelsFlutter.getInstance();
-    try {
-      await pusher.init(
-        apiKey: 'd6bf8ef287243e8f9e13',
-        cluster: 'eu',
-        // onConnectionStateChange: onConnectionStateChange,
-        // onError: onError,
-        // onSubscriptionSucceeded: onSubscriptionSucceeded,
-        onEvent: onEvent,
-        // onSubscriptionError: onSubscriptionError,
-        // onDecryptionFailure: onDecryptionFailure,
-        // onMemberAdded: onMemberAdded,
-        // onMemberRemoved: onMemberRemoved,
-        // authEndpoint: "<Your Authendpoint>",
-        // onAuthorizer: onAuthorizer
-      );
-      await pusher.subscribe(channelName: 'chat');
-      await pusher.connect();
-    } catch (e) {
-      print("ERROR: $e");
-    }
   }
 
   void _scrollDown() {
