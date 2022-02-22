@@ -1,5 +1,6 @@
 import 'package:cvrkutan_flutter/widgets/messageFull.dart';
 import 'package:flutter/material.dart';
+import 'package:pusher_channels_flutter/pusher_channels_flutter.dart';
 
 import 'models/message.dart';
 
@@ -26,6 +27,40 @@ class CvrkutanAppState extends State<CvrkutanApp> {
     const Message('Nothing much', 'max', 'timestamp2'),
     const Message('How are u?', 'spike', 'timestamp3'),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _initPusher();
+  }
+
+  void onEvent(PusherEvent event) {
+    print("onEvent: $event");
+  }
+
+  Future<void> _initPusher() async {
+    PusherChannelsFlutter pusher = PusherChannelsFlutter.getInstance();
+    try {
+      await pusher.init(
+        apiKey: 'd6bf8ef287243e8f9e13',
+        cluster: 'eu',
+        // onConnectionStateChange: onConnectionStateChange,
+        // onError: onError,
+        // onSubscriptionSucceeded: onSubscriptionSucceeded,
+        onEvent: onEvent,
+        // onSubscriptionError: onSubscriptionError,
+        // onDecryptionFailure: onDecryptionFailure,
+        // onMemberAdded: onMemberAdded,
+        // onMemberRemoved: onMemberRemoved,
+        // authEndpoint: "<Your Authendpoint>",
+        // onAuthorizer: onAuthorizer
+      );
+      await pusher.subscribe(channelName: 'chat');
+      await pusher.connect();
+    } catch (e) {
+      print("ERROR: $e");
+    }
+  }
 
   void _scrollDown() {
     if (_scrollController.position.maxScrollExtent > 0) {
