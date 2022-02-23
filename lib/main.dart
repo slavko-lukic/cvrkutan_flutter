@@ -3,6 +3,7 @@ import 'package:cvrkutan_flutter/widgets/messageFull.dart';
 import 'package:flutter/material.dart';
 import 'package:pusher_channels_flutter/pusher_channels_flutter.dart';
 
+import 'constants/colors.dart';
 import 'models/message.dart';
 import 'dart:convert';
 
@@ -18,9 +19,6 @@ class CvrkutanApp extends StatefulWidget {
 }
 
 class CvrkutanAppState extends State<CvrkutanApp> {
-  static const primaryColor = Color.fromARGB(255, 0, 178, 255);
-  static const surfaceColor = Color.fromARGB(255, 239, 239, 239);
-
   final TextEditingController _newMessageController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
 

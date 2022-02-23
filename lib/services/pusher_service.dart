@@ -1,4 +1,4 @@
-import 'package:cvrkutan_flutter/constants.dart';
+import 'package:cvrkutan_flutter/constants/keys.dart';
 import 'package:pusher_channels_flutter/pusher_channels_flutter.dart';
 
 class PusherService {
@@ -10,7 +10,7 @@ class PusherService {
   Future<void> init() async {
     try {
       await pusher.init(
-        apiKey: PUSHER_API_KEY,
+        apiKey: pusherApiKey,
         cluster: 'eu',
         onEvent: onEventHandler,
       );

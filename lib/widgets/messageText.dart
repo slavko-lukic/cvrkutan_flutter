@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 
+import '../constants/colors.dart';
+
 class MessageText extends StatelessWidget {
   final String messageText;
   final String messageTimestamp;
-
-  static const primaryColor = Color.fromARGB(255, 0, 178, 255);
-  static const surfaceColor = Color.fromARGB(255, 239, 239, 239);
 
   const MessageText(
       {required this.messageText, required this.messageTimestamp, Key? key})
