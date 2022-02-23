@@ -24,6 +24,7 @@ class CvrkutanAppState extends State<CvrkutanApp> {
   final ScrollController _scrollController = ScrollController();
 
   final List<Message> messages = <Message>[];
+  final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
 
   @override
   void initState() {
@@ -41,8 +42,13 @@ class CvrkutanAppState extends State<CvrkutanApp> {
         messageData['timestamp']);
 
     setState(() {
-      messages.add(incomingMessage);
+      displayNewMessage(incomingMessage);
     });
+  }
+
+  void displayNewMessage(Message incomingMessage) {
+    messages.add(incomingMessage);
+    _listKey.currentState?.insertItem(messages.length - 1);
   }
 
   Future<void> _initPusher() async {
@@ -112,12 +118,16 @@ class CvrkutanAppState extends State<CvrkutanApp> {
         ),
         body: Stack(
           children: [
-            ListView.builder(
+            AnimatedList(
+                key: _listKey,
                 controller: _scrollController,
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 100),
-                itemCount: messages.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return MessageFull(message: messages[index]);
+                initialItemCount: 0,
+                itemBuilder: (BuildContext context, int index, animation) {
+                  return MessageFull(
+                    message: messages[index],
+                    animation: animation,
+                  );
                 }),
             Align(
               alignment: Alignment.bottomCenter,
