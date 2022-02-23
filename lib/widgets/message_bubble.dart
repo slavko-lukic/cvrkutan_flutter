@@ -14,7 +14,7 @@ class MessageBubble extends StatelessWidget {
       offset: Offset(1, 1));
 
   final BorderRadiusGeometry _bubbleBorderRadius = const BorderRadius.only(
-      topRight: Radius.zero,
+      topRight: Radius.circular(20),
       topLeft: Radius.circular(20),
       bottomLeft: Radius.circular(20),
       bottomRight: Radius.circular(20));

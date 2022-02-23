@@ -1,4 +1,9 @@
+import 'dart:convert';
+
+import 'package:cvrkutan_flutter/constants/api.dart';
+import 'package:cvrkutan_flutter/models/message.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 
 import '../constants/colors.dart';
 
@@ -17,13 +22,30 @@ class MessageInput extends StatelessWidget {
 
   MessageInput({Key? key}) : super(key: key);
 
-  void onMessageSend() {
-    if (_newMessageController.text == '') return;
+  void onMessageSend() async {
+    if (_newMessageController.text.trim() == '') {
+      _newMessageController.clear();
+      return;
+    }
 
-    // _newMessageController.text
-    // send new message api call to server
+    Message _messageToSend = Message(
+        _newMessageController.text,
+        'https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fstatic.onecms.io%2Fwp-content%2Fuploads%2Fsites%2F6%2F2019%2F09%2Fross-friends-pivot-2000.jpg',
+        'dr_geller',
+        'timestamp');
 
     _newMessageController.clear();
+
+    try {
+      await post(Uri.parse(baseUrl + messagesUrl),
+          body: jsonEncode(_messageToSend.toJson()),
+          headers: {
+            "Accept": "application/json",
+            "content-type": "application/json"
+          });
+    } catch (e) {
+      print("Error while sending message: $e");
+    }
   }
 
   @override

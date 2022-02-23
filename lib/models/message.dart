@@ -5,4 +5,7 @@ class Message {
   final String timestamp;
 
   const Message(this.message, this.picture, this.username, this.timestamp);
+
+  Map toJson() =>
+      {'message': message, 'username': username, 'picture': picture};
 }
