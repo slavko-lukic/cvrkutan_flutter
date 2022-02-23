@@ -1,5 +1,6 @@
 import 'package:cvrkutan_flutter/services/pusher_service.dart';
 import 'package:cvrkutan_flutter/widgets/messageFull.dart';
+import 'package:cvrkutan_flutter/widgets/messageInput.dart';
 import 'package:flutter/material.dart';
 import 'package:pusher_channels_flutter/pusher_channels_flutter.dart';
 
@@ -19,7 +20,6 @@ class CvrkutanApp extends StatefulWidget {
 }
 
 class CvrkutanAppState extends State<CvrkutanApp> {
-  final TextEditingController _newMessageController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
 
   final List<Message> messages = <Message>[];
@@ -63,20 +63,6 @@ class CvrkutanAppState extends State<CvrkutanApp> {
         {_scrollController.jumpTo(_scrollController.position.maxScrollExtent)});
   }
 
-  void onMessageSend() {
-    if (_newMessageController.text == '') return;
-
-    Message newMessage =
-        Message(_newMessageController.text, ';', 'Spajk', '123');
-    setState(() {
-      messages.add(newMessage);
-    });
-
-    _scrollDown();
-
-    _newMessageController.clear();
-  }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -107,55 +93,7 @@ class CvrkutanAppState extends State<CvrkutanApp> {
                     animation: animation,
                   );
                 }),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                  padding: const EdgeInsets.only(
-                      bottom: 30, left: 20, right: 20, top: 20),
-                  decoration: const BoxDecoration(
-                    color: surfaceColor,
-                    boxShadow: <BoxShadow>[
-                      BoxShadow(
-                          color: Colors.black45,
-                          spreadRadius: 0,
-                          blurRadius: 3,
-                          offset: Offset(0, -1))
-                    ],
-                  ),
-                  child:
-                      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-                    // First child is enter comment text input
-                    Expanded(
-                        child: TextField(
-                      controller: _newMessageController,
-                      decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.only(left: 20),
-                        hintText: 'Упиши своју поруку...',
-                        filled: true,
-                        fillColor: Colors.white,
-                        suffixIcon: IconButton(
-                          icon: const Icon(Icons.send),
-                          color: primaryColor,
-                          iconSize: 25.0,
-                          onPressed: onMessageSend,
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                            borderSide:
-                                const BorderSide(color: primaryColor, width: 1),
-                            borderRadius: BorderRadius.circular(50)),
-                        focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                const BorderSide(color: primaryColor, width: 1),
-                            borderRadius: BorderRadius.circular(50)),
-                        border: OutlineInputBorder(
-                            borderSide:
-                                const BorderSide(color: primaryColor, width: 1),
-                            borderRadius: BorderRadius.circular(50)),
-                      ),
-                    )),
-                    // Second child is button
-                  ])),
-            )
+            MessageInput()
           ],
         ),
       ),
