@@ -80,19 +80,21 @@ class CvrkutanAppState extends State<CvrkutanApp> {
             onPressed: null,
           ),
         ),
-        body: Stack(
+        body: Column(
           children: [
-            AnimatedList(
-                key: _listKey,
-                controller: _scrollController,
-                padding: const EdgeInsets.fromLTRB(0, 0, 0, 120),
-                initialItemCount: 0,
-                itemBuilder: (BuildContext context, int index, animation) {
-                  return MessageFull(
-                    message: messages[index],
-                    animation: animation,
-                  );
-                }),
+            Expanded(
+              child: AnimatedList(
+                  key: _listKey,
+                  controller: _scrollController,
+                  padding: const EdgeInsets.only(bottom: 20),
+                  initialItemCount: 0,
+                  itemBuilder: (BuildContext context, int index, animation) {
+                    return MessageFull(
+                      message: messages[index],
+                      animation: animation,
+                    );
+                  }),
+            ),
             MessageInput()
           ],
         ),

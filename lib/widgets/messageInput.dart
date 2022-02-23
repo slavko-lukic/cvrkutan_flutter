@@ -28,38 +28,30 @@ class MessageInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.bottomCenter,
-      child: Container(
-          padding:
-              const EdgeInsets.only(bottom: 30, left: 20, right: 20, top: 20),
-          decoration: BoxDecoration(
-            color: surfaceColor,
-            boxShadow: <BoxShadow>[_containerTopShadow],
+    return Container(
+        padding:
+            const EdgeInsets.only(bottom: 30, left: 20, right: 20, top: 20),
+        decoration: BoxDecoration(
+          color: surfaceColor,
+          boxShadow: <BoxShadow>[_containerTopShadow],
+        ),
+        child: TextField(
+          controller: _newMessageController,
+          decoration: InputDecoration(
+            contentPadding: const EdgeInsets.only(left: 20),
+            hintText: 'Упиши своју поруку...',
+            filled: true,
+            fillColor: Colors.white,
+            suffixIcon: IconButton(
+              icon: const Icon(Icons.send),
+              color: primaryColor,
+              iconSize: 25.0,
+              onPressed: onMessageSend,
+            ),
+            enabledBorder: _inputBoxBorder,
+            focusedBorder: _inputBoxBorder,
+            border: _inputBoxBorder,
           ),
-          child: Row(
-            children: [
-              Expanded(
-                  child: TextField(
-                controller: _newMessageController,
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.only(left: 20),
-                  hintText: 'Упиши своју поруку...',
-                  filled: true,
-                  fillColor: Colors.white,
-                  suffixIcon: IconButton(
-                    icon: const Icon(Icons.send),
-                    color: primaryColor,
-                    iconSize: 25.0,
-                    onPressed: onMessageSend,
-                  ),
-                  enabledBorder: _inputBoxBorder,
-                  focusedBorder: _inputBoxBorder,
-                  border: _inputBoxBorder,
-                ),
-              ))
-            ],
-          )),
-    );
+        ));
   }
 }
