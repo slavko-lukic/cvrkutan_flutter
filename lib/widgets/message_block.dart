@@ -16,7 +16,11 @@ class MessageBlock extends StatelessWidget {
   );
 
   MessageBlock({required this.message, required this.animation, Key? key})
-      : super(key: key);
+      : super(key: key) {
+    if (message.username == 'dr_geller') {
+      _offset.begin = const Offset(-2.5, 0.0);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,12 +31,21 @@ class MessageBlock extends StatelessWidget {
       )),
       child: Container(
         margin: const EdgeInsets.fromLTRB(20, 20, 20, 10),
-        child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          MessageBubble(
-              messageText: message.message,
-              messageTimestamp: message.timestamp),
-          MessageUserInfo(username: message.username, picture: message.picture)
-        ]),
+        child: message.username == 'dr_geller'
+            ? Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                MessageUserInfo(
+                    username: message.username, picture: message.picture),
+                MessageBubble(
+                    messageText: message.message,
+                    messageTimestamp: message.timestamp)
+              ])
+            : Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                MessageBubble(
+                    messageText: message.message,
+                    messageTimestamp: message.timestamp),
+                MessageUserInfo(
+                    username: message.username, picture: message.picture)
+              ]),
       ),
     );
   }
