@@ -49,6 +49,7 @@ class CvrkutanAppState extends State<CvrkutanApp> {
   void displayNewMessage(Message incomingMessage) {
     messages.add(incomingMessage);
     _listKey.currentState?.insertItem(messages.length - 1);
+    _scrollDown();
   }
 
   Future<void> _initPusher() async {
@@ -76,13 +77,8 @@ class CvrkutanAppState extends State<CvrkutanApp> {
   }
 
   void _scrollDown() {
-    if (_scrollController.position.maxScrollExtent > 0) {
-      _scrollController.animateTo(
-        _scrollController.position.maxScrollExtent + 100,
-        duration: const Duration(milliseconds: 250),
-        curve: Curves.fastOutSlowIn,
-      );
-    }
+    WidgetsBinding.instance?.addPostFrameCallback((_) =>
+        {_scrollController.jumpTo(_scrollController.position.maxScrollExtent)});
   }
 
   void onMessageSend() {
@@ -121,7 +117,7 @@ class CvrkutanAppState extends State<CvrkutanApp> {
             AnimatedList(
                 key: _listKey,
                 controller: _scrollController,
-                padding: const EdgeInsets.fromLTRB(0, 0, 0, 100),
+                padding: const EdgeInsets.fromLTRB(0, 0, 0, 120),
                 initialItemCount: 0,
                 itemBuilder: (BuildContext context, int index, animation) {
                   return MessageFull(
