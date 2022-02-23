@@ -5,7 +5,7 @@ import 'package:pusher_channels_flutter/pusher_channels_flutter.dart';
 
 import '../models/message.dart';
 import '../services/pusher_service.dart';
-import 'messageFull.dart';
+import 'message_block.dart';
 
 class MessagesConainer extends StatefulWidget {
   const MessagesConainer({Key? key}) : super(key: key);
@@ -57,6 +57,7 @@ class MessagesContainerState extends State<MessagesConainer> {
   }
 
   void _scrollDown() {
+    // called after ui is rendered
     WidgetsBinding.instance?.addPostFrameCallback((_) =>
         {_scrollController.jumpTo(_scrollController.position.maxScrollExtent)});
   }
@@ -69,7 +70,7 @@ class MessagesContainerState extends State<MessagesConainer> {
         padding: const EdgeInsets.only(bottom: 20),
         initialItemCount: 0,
         itemBuilder: (BuildContext context, int index, animation) {
-          return MessageFull(
+          return MessageBlock(
             message: _messages[index],
             animation: animation,
           );
