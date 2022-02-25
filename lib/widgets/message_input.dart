@@ -4,6 +4,7 @@ import 'package:cvrkutan_flutter/constants/api.dart';
 import 'package:cvrkutan_flutter/models/message.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants/colors.dart';
 
@@ -23,19 +24,29 @@ class MessageInput extends StatelessWidget {
   MessageInput({Key? key}) : super(key: key);
 
   void onMessageSend() async {
+    // return if input field is empty
     if (_newMessageController.text.trim() == '') {
       _newMessageController.clear();
       return;
     }
 
+    // get user info from storage
+    final prefs = await SharedPreferences.getInstance();
+    String? _usernameFromStorage = prefs.getString('username');
+    String? _pictureUrlFromStorage = prefs.getString('pictureUrl');
+
+    // create message object
     Message _messageToSend = Message(
         _newMessageController.text,
-        'https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fstatic.onecms.io%2Fwp-content%2Fuploads%2Fsites%2F6%2F2019%2F09%2Fross-friends-pivot-2000.jpg',
-        'dr_geller',
+        _pictureUrlFromStorage ??
+            'https://cdn2.iconfinder.com/data/icons/social-flat-buttons-3/512/anonymous-512.png',
+        _usernameFromStorage ?? 'anonymous',
         'timestamp');
 
+    // clear message controller (input field)
     _newMessageController.clear();
 
+    // make api call
     try {
       await post(Uri.parse(baseUrl + messagesUrl),
           body: jsonEncode(_messageToSend.toJson()),
